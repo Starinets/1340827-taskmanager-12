@@ -8,3 +8,7 @@ node_modules/
 *.webp binary
 *.woff binary
 *.woff2 binary
+
+# Собранные JS-файлы (бандл)
+public/bundle.js
+public/bundle.js.map
