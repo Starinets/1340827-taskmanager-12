@@ -1,16 +1,16 @@
 import {COLORS} from "../const.js";
 import {getRandomInteger} from "../utils.js";
 
-const DESCRIPTION = [
-  `Изучить теорию`,
-  `Сделать домашку`,
-  `Пройти интенсив на соточку`
-];
-
 const generateDescription = () => {
-  const randomIndex = getRandomInteger(0, DESCRIPTION.length - 1);
+  const descriptions = [
+    `Изучить теорию`,
+    `Сделать домашку`,
+    `Пройти интенсив на соточку`
+  ];
 
-  return DESCRIPTION[randomIndex];
+  const randomIndex = getRandomInteger(0, descriptions.length - 1);
+
+  return descriptions[randomIndex];
 };
 
 const generateDate = () => {
@@ -58,7 +58,7 @@ const getRandomColor = () => {
   return COLORS[randomIndex];
 };
 
-const generateTask = () => {
+export const generateTask = () => {
   const dueDate = generateDate();
   const repeating = dueDate === null
     ? generateRepeating()
@@ -81,5 +81,3 @@ const generateTask = () => {
     isFavorite: Boolean(getRandomInteger(0, 1))
   };
 };
-
-export {generateTask};
