@@ -1,7 +1,7 @@
 import SiteMenuView from "./view/site-menu";
 import FilterView from "./view/filter";
-import {createTaskTemplate} from "./view/task";
-import {createTaskEditTemplate} from "./view/task-edit";
+import TaskView from "./view/task";
+import TaskEditView from "./view/task-edit";
 import LoadMoreButtonView from "./view/load-more-button";
 import BoardView from "./view/board";
 import SortView from "./view/sort";
@@ -28,10 +28,10 @@ renderElement(boardComponent.getElement(), new SortView().getElement(), RenderPo
 
 const taskListComponent = new TaskListView();
 renderElement(boardComponent.getElement(), taskListComponent.getElement(), RenderPosition.BEFORE_END);
-renderTemplate(taskListComponent.getElement(), createTaskEditTemplate(tasks[0]), RenderPosition.BEFORE_END);
+renderElement(taskListComponent.getElement(), new TaskEditView(tasks[0]).getElement(), RenderPosition.BEFORE_END);
 
 for (let i = 1; i < Math.min(tasks.length, TASK_COUNT_PER_STEP); i++) {
-  renderTemplate(taskListComponent.getElement(), createTaskTemplate(tasks[i]), `beforeend`);
+  renderElement(taskListComponent.getElement(), new TaskView(tasks[i]).getElement(), RenderPosition.BEFORE_END);
 }
 
 if (tasks.length > TASK_COUNT_PER_STEP) {
