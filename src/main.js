@@ -6,6 +6,7 @@ import LoadMoreButtonView from "./view/load-more-button";
 import BoardView from "./view/board";
 import SortView from "./view/sort";
 import TaskListView from "./view/task-list";
+import NoTaskView from "./view/no-task.js";
 import {generateTask} from "./mock/task";
 import {generateFilter} from "./mock/filter";
 import {render, RenderPosition} from "./utils";
@@ -31,11 +32,23 @@ const renderTask = (taskListElement, task) => {
     taskListElement.replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
   };
 
-  taskComponent.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, replaceCardToForm);
+  const onEscKeyDown = (evt) => {
+    if (evt.key === `Escape` || evt.key === `Esc`) {
+      evt.preventDefault();
+      replaceFormToCard();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
+  taskComponent.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, () => {
+    replaceCardToForm();
+    document.addEventListener(`keydown`, onEscKeyDown);
+  });
 
   taskEditComponent.getElement().querySelector(`form`).addEventListener(`submit`, (evt) => {
     evt.preventDefault();
     replaceFormToCard();
+    document.removeEventListener(`keydown`, onEscKeyDown);
   });
 
   render(taskListElement, taskComponent.getElement(), RenderPosition.BEFORE_END);
@@ -46,7 +59,19 @@ render(siteMainElement, new FilterView(filters).getElement(), RenderPosition.BEF
 
 const boardComponent = new BoardView();
 render(siteMainElement, boardComponent.getElement(), RenderPosition.BEFORE_END);
-render(boardComponent.getElement(), new SortView().getElement(), RenderPosition.AFTER_BEGIN);
+
+// По условию заглушка должна показываться,
+// когда нет задач или все задачи в архиве.
+// Мы могли бы написать:
+// tasks.length === 0 || tasks.every((task) => task.isArchive)
+// Но благодаря тому, что на пустом массиве every вернёт true,
+// мы можем опустить "tasks.length === 0".
+// p.s. А метод some на пустом массиве наборот вернет false
+if (tasks.every((task) => task.isArchive)) {
+  render(boardComponent.getElement(), new NoTaskView().getElement(), RenderPosition.BEFORE_END);
+} else {
+  render(boardComponent.getElement(), new SortView().getElement(), RenderPosition.BEFORE_END);
+}
 
 const taskListComponent = new TaskListView();
 render(boardComponent.getElement(), taskListComponent.getElement(), RenderPosition.BEFORE_END);
