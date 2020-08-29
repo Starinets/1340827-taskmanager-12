@@ -1,6 +1,6 @@
-import SmartView from "./smart";
-import {COLORS} from "../const";
-import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate} from "../utils/task";
+import SmartView from "./smart.js";
+import {COLORS} from "../const.js";
+import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate} from "../utils/task.js";
 
 const BLANK_TASK = {
   color: COLORS[0],
@@ -130,7 +130,7 @@ const createTaskEditTemplate = (data) => {
         </div>
 
         <div class="card__status-btns">
-        <button class="card__save" type="submit" ${isSubmitDisabled ? `disabled` : ``}>save</button>
+          <button class="card__save" type="submit" ${isSubmitDisabled ? `disabled` : ``}>save</button>
           <button class="card__delete" type="button">delete</button>
         </div>
       </div>
@@ -181,8 +181,8 @@ export default class TaskEdit extends SmartView {
 
     if (this._data.isRepeating) {
       this.getElement()
-          .querySelector(`.card__repeat-days-inner`)
-          .addEventListener(`change`, this._repeatingChangeHandler);
+        .querySelector(`.card__repeat-days-inner`)
+        .addEventListener(`change`, this._repeatingChangeHandler);
     }
 
     this.getElement()
@@ -219,22 +219,6 @@ export default class TaskEdit extends SmartView {
   }
 
   _repeatingChangeHandler(evt) {
-    evt.preventDefault();
-    this.updateData({
-      repeating: Object.assign(
-          {},
-          this._data.repeating,
-          {[evt.target.value]: evt.target.checked}
-      )
-    });
-  }
-
-  _colorChangeHandler(evt) {
-    evt.preventDefault();
-    this.updateData({
-      color: evt.target.value
-    });
-  }_repeatingChangeHandler(evt) {
     evt.preventDefault();
     this.updateData({
       repeating: Object.assign(
